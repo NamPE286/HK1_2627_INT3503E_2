@@ -3,8 +3,6 @@ from uuid import uuid4
 
 app = Flask(__name__)
 
-STUDENTS = []
-
 
 @app.get("/health")
 def health():
@@ -20,6 +18,9 @@ def echo():
 @app.get("/")
 def index():
     return {"message": "Hello, API!"}
+
+
+STUDENTS = []
 
 
 @app.post("/students")
@@ -61,3 +62,21 @@ def get_book(book_id):
 @app.get("/items/<int:item_id>")
 def get_item(item_id):
     return {"id": item_id}
+
+
+ORDERS = {}
+
+
+@app.delete("/orders/<order_id>")
+def delete_order(order_id):
+    order = ORDERS.get(order_id)
+
+    if order is None:
+        return {"error": "not found"}, 404
+
+    if order["status"] in ("shipped", "delivered"):
+        return {"error": "cannot delete"}, 409
+
+    ORDERS.pop(order_id, None)
+    
+    return "", 204

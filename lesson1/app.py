@@ -39,3 +39,20 @@ def create_student():
     STUDENTS.append(student)
 
     return student, 201
+
+
+def find_by_id(id):
+    if id == "123":
+        return {"id": id, "name": "abc"}
+
+    return None
+
+
+@app.get("/books/<book_id>")
+def get_book(book_id):
+    book = find_by_id(book_id)
+
+    if book is None:
+        return {"error": "not found"}, 404
+
+    return book

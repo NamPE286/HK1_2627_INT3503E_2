@@ -42,21 +42,66 @@ def create_student():
     return student, 201
 
 
-def find_by_id(id):
-    if id == "123":
-        return {"id": id, "name": "abc"}
-
-    return None
+BOOKS = [{"id": 1, "title": "Clean Code", "author": "R. Martin"}]
+_next = 2
 
 
-@app.get("/books/<book_id>")
+def find_book(book_id):
+    return next((book for book in BOOKS if book["id"] == book_id), None)
+
+
+@app.get("/books")
+def list_books():
+    try:
+        limit = int(request.args.get("limit", 100))
+    except ValueError:
+        return {"error": "limit must be a non-negative integer"}, 400
+
+    if limit < 0:
+        return {"error": "limit must be a non-negative integer"}, 400
+
+    return BOOKS[:limit]
+
+
+@app.get("/books/<int:book_id>")
 def get_book(book_id):
-    book = find_by_id(book_id)
+    book = find_book(book_id)
 
     if book is None:
         return {"error": "not found"}, 404
 
     return book
+
+
+@app.post("/books")
+def create_book():
+    global _next
+    body = request.get_json(silent=True)
+    t, a = body.get("title"), body.get("author")
+
+    if not t or not a:
+        return {"error": "need title+author"}, 400
+
+    book = {"id": _next, "title": body["title"], "author": body["author"]}
+    _next += 1
+    BOOKS.append(book)
+
+    return book, 201, {"Location": f"/books/{book['id']}"}
+
+@app.route("/books/<int:bid>", methods=["PUT", "DELETE"])
+def modify_book(bid):
+    book = find_book(bid)
+    
+    if not book:
+        return {"error": "not found"}, 404
+    
+    if request.method == "PUT":
+        book.update(request.get_json(silent=True) or {})
+        return book, 200
+    
+    BOOKS.remove(book)
+    
+    return "", 204
 
 
 @app.get("/items/<int:item_id>")
@@ -78,5 +123,5 @@ def delete_order(order_id):
         return {"error": "cannot delete"}, 409
 
     ORDERS.pop(order_id, None)
-    
+
     return "", 204

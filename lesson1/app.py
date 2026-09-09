@@ -56,3 +56,8 @@ def get_book(book_id):
         return {"error": "not found"}, 404
 
     return book
+
+
+@app.get("/items/<int:item_id>")
+def get_item(item_id):
+    return {"id": item_id}

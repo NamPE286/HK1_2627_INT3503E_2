@@ -20,3 +20,4 @@ Tiền tố `/api/v1`
 ```
 
 `posts`, `tags` và `users` là các collection; URI có ID là item. Bình luận nằm dưới bài viết, còn tag có collection riêng vì một thẻ dùng được cho nhiều bài. `following` biểu diễn quan hệ theo dõi; `followers` là chiều ngược lại
+![alt text](image.png)

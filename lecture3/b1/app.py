@@ -2,6 +2,7 @@ from flask import Flask, request
 
 
 app = Flask(__name__)
+
 posts = []
 next_post_id = 1
 
@@ -13,6 +14,7 @@ def list_posts():
     author_id = request.args.get("author_id")
 
     data = posts
+
     if author_id is not None:
         data = [post for post in data if post["author_id"] == int(author_id)]
 
@@ -42,6 +44,7 @@ def create_post():
         "title": data["title"].strip(),
         "content": data["content"].strip(),
     }
+
     posts.append(post)
     next_post_id += 1
 
@@ -49,4 +52,4 @@ def create_post():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5001)

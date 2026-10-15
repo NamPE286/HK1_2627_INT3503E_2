@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "required": ["id", "title", "price"],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "isbn": { "type": "string" },
+    "price": {
+      "type": "object",
+      "properties": {
+        "amount": { "type": "integer" },
+        "currency": { "type": "string" }
+      }
+    },
+    "stock": { "type": "integer" },
+    "genre": { "type": "string" },
+    "inStock": { "type": "boolean" },
+    "category": { "type": "object" },
+    "authors": { "type": "array" }
+  }
+}

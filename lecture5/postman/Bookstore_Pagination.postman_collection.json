@@ -1,0 +1,43 @@
+{
+  "info": {
+    "name": "Lecture5 Books",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "list books",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/v1/books?limit=3"
+      }
+    },
+    {
+      "name": "offset",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/v1/books?strategy=offset&limit=3"
+      }
+    },
+    {
+      "name": "filter genre",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/v1/books?genre=tech"
+      }
+    },
+    {
+      "name": "sort price",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/v1/books?sort=-price"
+      }
+    },
+    {
+      "name": "get book",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/v1/books/1"
+      }
+    }
+  ]
+}

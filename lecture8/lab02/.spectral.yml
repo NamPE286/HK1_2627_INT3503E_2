@@ -1,0 +1,48 @@
+extends: spectral:oas
+
+rules:
+  info-contact: off
+  info-license: off
+  openapi-tags: off
+  operation-description: off
+  operation-tags: off
+  operation-operationId: error
+  response-204-no-content:
+    severity: error
+    given: "$.paths[*][*].responses['204']"
+    then:
+      field: content
+      function: undefined
+  book-year-integer:
+    severity: error
+    given: $.components.schemas.Book.properties.year
+    then:
+      field: type
+      function: enumeration
+      functionOptions:
+        values: [integer]
+  response-200-has-fields:
+    message: Response 200 must describe at least one JSON field.
+    severity: error
+    given: "$.paths[*][*].responses['200']"
+    then:
+      field: content.application/json.schema
+      function: schema
+      functionOptions:
+        schema:
+          anyOf:
+            - type: object
+              required: [type, properties]
+              properties:
+                type: {const: object}
+                properties: {type: object, minProperties: 1}
+            - type: object
+              required: [type, items]
+              properties:
+                type: {const: array}
+                items:
+                  type: object
+                  required: [type, properties]
+                  properties:
+                    type: {const: object}
+                    properties: {type: object, minProperties: 1}

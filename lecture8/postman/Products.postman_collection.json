@@ -1,0 +1,262 @@
+{
+  "info": {
+    "name": "Lecture 8 Products",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:5000"
+    },
+    {
+      "key": "product_id",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "List products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/api/v1/products"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is an array of products\", function () {",
+              "    const products = pm.response.json();",
+              "    pm.expect(products).to.be.an(\"array\");",
+              "    products.forEach(function (product) {",
+              "        pm.expect(product.id).to.be.a(\"number\");",
+              "        pm.expect(product.name).to.be.a(\"string\");",
+              "        pm.expect(product.price).to.be.a(\"number\");",
+              "        pm.expect(product.stock).to.be.a(\"number\");",
+              "        pm.expect(product.created_at).to.be.a(\"string\");",
+              "    });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Lecture 8 Keyboard\",\n  \"price\": 350000,\n  \"stock\": 5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/v1/products"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.unset(\"product_id\");",
+              "",
+              "pm.test(\"HTTP 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Created product has the submitted values\", function () {",
+              "    const product = pm.response.json();",
+              "    pm.expect(product.id).to.be.a(\"number\");",
+              "    pm.expect(product.name).to.be.a(\"string\");",
+              "    pm.expect(product.price).to.be.a(\"number\");",
+              "    pm.expect(product.stock).to.be.a(\"number\");",
+              "    pm.expect(product.created_at).to.be.a(\"string\");",
+              "    pm.collectionVariables.set(\"product_id\", String(product.id));",
+              "    pm.expect(product.name).to.eql(\"Lecture 8 Keyboard\");",
+              "    pm.expect(product.price).to.eql(350000);",
+              "    pm.expect(product.stock).to.eql(5);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/api/v1/products/{{product_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Product matches expected data\", function () {",
+              "    const product = pm.response.json();",
+              "    pm.expect(String(product.id)).to.eql(pm.collectionVariables.get(\"product_id\"));",
+              "    pm.expect(product.name).to.eql(\"Lecture 8 Keyboard\");",
+              "    pm.expect(product.price).to.eql(350000);",
+              "    pm.expect(product.stock).to.eql(5);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update stock",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"stock\": 8\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/v1/products/{{product_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Product matches expected data\", function () {",
+              "    const product = pm.response.json();",
+              "    pm.expect(String(product.id)).to.eql(pm.collectionVariables.get(\"product_id\"));",
+              "    pm.expect(product.name).to.eql(\"Lecture 8 Keyboard\");",
+              "    pm.expect(product.price).to.eql(350000);",
+              "    pm.expect(product.stock).to.eql(8);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reject invalid product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"price\": -1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{base_url}}/api/v1/products"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 422\", function () {",
+              "    pm.response.to.have.status(422);",
+              "});",
+              "",
+              "pm.test(\"Validation errors for name and price\", function () {",
+              "    const errors = pm.response.json().errors;",
+              "    pm.expect(errors.name).to.be.an(\"array\").that.is.not.empty;",
+              "    pm.expect(errors.price).to.be.an(\"array\").that.is.not.empty;",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete product",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{base_url}}/api/v1/products/{{product_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});",
+              "",
+              "pm.test(\"Response body is empty\", function () {",
+              "    pm.expect(pm.response.text()).to.eql(\"\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read deleted product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/api/v1/products/{{product_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "",
+              "pm.collectionVariables.unset(\"product_id\");"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

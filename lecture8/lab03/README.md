@@ -23,4 +23,6 @@ npx --yes newman@6.2.1 run books-api.postman_collection.json \
   -r cli,junit --reporter-junit-export junit.xml
 ```
 
-Lần chạy đã lưu có 7 request và 14 assertion, tất cả đều pass trong 103 ms. [Báo cáo JUnit](junit.xml)
+Lần chạy đã lưu có 7 request và 14 assertion, tất cả đều pass trong 101 ms. [Báo cáo JUnit](junit.xml)
+
+[Ảnh đầu ra Newman](evidence/newman-terminal.png)

@@ -13,3 +13,5 @@ npx --yes @stoplight/spectral-cli@6.17.1 lint openapi.yaml --ruleset .spectral.y
 [Kết quả lint](lint.log) của bản đã sửa có 0 vấn đề.
 
 Nếu Flask trả sai trường, dùng pytest và Flask test client để gọi `GET /books/{id}`, kiểm tra HTTP `200` rồi đối chiếu JSON thực tế với schema `Book` bằng trình kiểm tra OpenAPI 3.0. Schema sẽ bắt được trường bắt buộc bị thiếu, trường sai kiểu và trường thừa.
+
+![Spectral báo 3 lỗi trên starter và 0 lỗi sau khi sửa](evidence/spectral-terminal.png)

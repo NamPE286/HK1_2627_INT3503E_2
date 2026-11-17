@@ -36,3 +36,7 @@ Test `test_response_extra_field_blocked` đối chiếu JSON thực tế từ `G
 ```sh
 python -m pytest -v tests/test_schema.py
 ```
+
+Lần chạy cả hai bước có 5 test pass trong 0,08 giây.
+
+![Kết quả pytest của Lab 1](evidence/step2-terminal.png)

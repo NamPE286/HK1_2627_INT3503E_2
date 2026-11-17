@@ -30,9 +30,15 @@ PY
 Mở terminal khác tại `lecture8/lab04`. Khởi động lại API bằng lệnh trên trước mỗi kịch bản để đặt lại dữ liệu. Locust vẫn xuất báo cáo khi có request lỗi.
 
 ```sh
-locust -f locustfile.py --headless -H http://127.0.0.1:5000 -u 10 -r 2 -t 30s --html /tmp/books-A.html
-locust -f locustfile.py --headless -H http://127.0.0.1:5000 -u 50 -r 5 -t 60s --html /tmp/books-B.html
-locust -f locustfile.py --headless -H http://127.0.0.1:5000 -u 200 -r 50 -t 30s --html /tmp/books-C.html
+locust -f locustfile.py --headless -H http://127.0.0.1:5000 -u 10 -r 2 -t 30s --html reports/A.html
+locust -f locustfile.py --headless -H http://127.0.0.1:5000 -u 50 -r 5 -t 60s --html reports/B.html
+locust -f locustfile.py --headless -H http://127.0.0.1:5000 -u 200 -r 50 -t 30s --html reports/C.html
 ```
 
-Kết quả đã lưu ở dạng Markdown. [Phân tích và báo cáo từng kịch bản](analysis.md)
+Các file HTML là báo cáo Locust xuất từ ba lần chạy Books API. [Phân tích và báo cáo từng kịch bản](analysis.md)
+
+Ảnh đầu ra Locust của từng kịch bản:
+
+- [A — Baseline](evidence/A-terminal.png)
+- [B — Tải thường](evidence/B-terminal.png)
+- [C — Spike](evidence/C-terminal.png)
